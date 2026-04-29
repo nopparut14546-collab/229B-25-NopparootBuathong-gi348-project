@@ -1,36 +1,35 @@
 using UnityEngine;
 
-public class SimpleTPDCamera : MonoBehaviour
+public class DeadZoneCameraRMB : MonoBehaviour
 {
     public Transform target;
-    public Vector3 offset = new Vector3(0, 2, -4);
 
-    public float mouseSensitivity = 3f;
-    public float smoothSpeed = 10f;
+    public Vector3 offset = new Vector3(0, 2, -6);
+
+    public float deadZoneWidth = 2f;
+    public float deadZoneHeight = 1.5f;
+
+    public float followSpeed = 5f;
+
+    public float rotationSpeed = 3f;
 
     float yaw;
     float pitch;
 
-    void Start()
-    {
-        Cursor.lockState = CursorLockMode.None; // ??????????????
-    }
-
     void LateUpdate()
     {
         RotateCamera();
-        FollowPlayer();
+        Follow();
     }
 
     void RotateCamera()
     {
-        // ? ???????????????????????
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1)) // ???????????
         {
             Cursor.lockState = CursorLockMode.Locked;
 
-            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * 100f * Time.deltaTime;
-            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * 100f * Time.deltaTime;
+            float mouseX = Input.GetAxis("Mouse X") * rotationSpeed * 100f * Time.deltaTime;
+            float mouseY = Input.GetAxis("Mouse Y") * rotationSpeed * 100f * Time.deltaTime;
 
             yaw += mouseX;
             pitch -= mouseY;
@@ -43,18 +42,30 @@ public class SimpleTPDCamera : MonoBehaviour
         }
     }
 
-    void FollowPlayer()
+    void Follow()
     {
-        Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
-        Vector3 desiredPosition = target.position + rotation * offset;
+        Quaternion rot = Quaternion.Euler(pitch, yaw, 0);
+        Vector3 targetPos = target.position + rot * offset;
 
-        transform.position = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-        transform.LookAt(target);
-    }
+        Vector3 desiredPos = transform.position;
 
-    // ?? ??? Player ??? yaw ????? (??????????????????)
-    public float GetYaw()
-    {
-        return yaw;
+        // ?? Dead Zone X
+        if (Mathf.Abs(targetPos.x - transform.position.x) > deadZoneWidth)
+        {
+            desiredPos.x = Mathf.Lerp(transform.position.x, targetPos.x, followSpeed * Time.deltaTime);
+        }
+
+        // ?? Dead Zone Y (????????????????)
+        if (Mathf.Abs(targetPos.y - transform.position.y) > deadZoneHeight)
+        {
+            desiredPos.y = Mathf.Lerp(transform.position.y, targetPos.y, followSpeed * Time.deltaTime);
+        }
+
+        // Z ??? (?????? lock ?????)
+        desiredPos.z = targetPos.z;
+
+        transform.position = desiredPos;
+
+        transform.LookAt(target.position + Vector3.up * 1.5f);
     }
 }

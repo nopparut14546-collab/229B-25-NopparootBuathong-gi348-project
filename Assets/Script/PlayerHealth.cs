@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public DamageFlash damageFlash;
+
     [Header("Health")]
     public int maxHealth = 100;
     private int currentHealth;
@@ -23,18 +25,33 @@ public class PlayerHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
-        Debug.Log("Player Current Health: " + currentHealth);
+
+        float percent = (float)currentHealth / maxHealth;
+
+        // ?? ?????????????????????
+        if (damageFlash != null)
+        {
+            damageFlash.SetHealthPercent(percent);
+            damageFlash.Flash();
+        }
 
         if (currentHealth <= 0)
         {
             Die();
-            Debug.Log("Player Died! Remaining Lives: " + currentLives);
         }
     }
 
     void Die()
     {
         isDead = true;
+
+        // ?? ?????????????
+        if (damageFlash != null)
+        {
+            damageFlash.ResetFlash();
+        }
+
+
         currentLives--;
 
         if (currentLives > 0)
