@@ -28,7 +28,6 @@ public class PlayerHealth : MonoBehaviour
 
         float percent = (float)currentHealth / maxHealth;
 
-        // ?? ?????????????????????
         if (damageFlash != null)
         {
             damageFlash.SetHealthPercent(percent);
@@ -45,7 +44,6 @@ public class PlayerHealth : MonoBehaviour
     {
         isDead = true;
 
-        // ?? ?????????????
         if (damageFlash != null)
         {
             damageFlash.ResetFlash();
@@ -56,28 +54,22 @@ public class PlayerHealth : MonoBehaviour
 
         if (currentLives > 0)
         {
-            // ?? ?????????? ? Respawn
             Respawn();
         }
         else
         {
-            // ? ???????? ? ???
             GameManager.instance.ShowLoseUI();
         }
     }
 
     void Respawn()
     {
-        // ???????
         currentHealth = maxHealth;
 
-        // ?????? checkpoint
         transform.position = GameManager.instance.GetSpawnPoint();
 
-        // ???????
         isDead = false;
 
-        // reset velocity
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb != null)
         {
