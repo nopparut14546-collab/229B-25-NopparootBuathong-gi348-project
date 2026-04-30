@@ -9,6 +9,7 @@ TagManager:
   - Ladder
   - Item
   - BreakableWall
+  - Enemy
   layers:
   - Default
   - TransparentFX

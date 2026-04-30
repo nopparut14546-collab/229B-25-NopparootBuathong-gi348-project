@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
+    public UI_Lives uiLives;
+
     public DamageFlash damageFlash;
 
     [Header("Health")]
@@ -18,6 +20,9 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
         currentLives = maxLives;
+
+        if (uiLives != null)
+            uiLives.UpdateLives(currentLives);
     }
 
     public void TakeDamage(int damage)
@@ -52,6 +57,10 @@ public class PlayerHealth : MonoBehaviour
 
         currentLives--;
 
+        if (uiLives != null)
+        {
+            uiLives.UpdateLives(currentLives);
+        }
         if (currentLives > 0)
         {
             Respawn();

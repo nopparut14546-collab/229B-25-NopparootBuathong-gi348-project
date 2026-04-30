@@ -3,6 +3,7 @@ using System.Collections;
 
 public class PlayerController : MonoBehaviour
 {
+
     public float moveSpeed = 5f;
     public float jumpForce = 7f;         // ??????????
     public float doubleJumpForce = 3f;   // ?? ????????????????????? 2 ???
@@ -37,6 +38,7 @@ public class PlayerController : MonoBehaviour
         }
 
         Jump();
+        RotateToCamera();
     }
 
     void Move()
@@ -67,6 +69,22 @@ public class PlayerController : MonoBehaviour
 
         // ??????????????????? (??? Y)
         transform.Rotate(0, mouseX, 0);
+    }
+
+    void RotateToCamera()
+    {
+        if (Input.GetMouseButton(1)) // ???????????
+        {
+            Vector3 camForward = cameraTransform.forward;
+
+            // ?????? Y (????????????????????)
+            Vector3 direction = new Vector3(camForward.x, 0, camForward.z);
+
+            if (direction != Vector3.zero)
+            {
+                transform.forward = direction;
+            }
+        }
     }
 
     void Jump()
@@ -165,4 +183,5 @@ public class PlayerController : MonoBehaviour
         rb.useGravity = true;
         isFrozen = false;
     }
+
 }

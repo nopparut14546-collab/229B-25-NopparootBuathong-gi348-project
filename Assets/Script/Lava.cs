@@ -3,7 +3,7 @@ using UnityEngine;
 public class Lava : MonoBehaviour
 {
     private float nextDamageTime;
-    public float damageInterval = 0.5f; // ?????? 0.5 ??????
+    public float damageInterval = 0.5f; 
     public int damageAmount = 10;
 
     private void OnCollisionStay(Collision collision)
@@ -14,7 +14,7 @@ public class Lava : MonoBehaviour
             if (hp != null)
             {
                 hp.TakeDamage(damageAmount);
-                nextDamageTime = Time.time + damageInterval; // ???????????????????????????????????
+                nextDamageTime = Time.time + damageInterval; 
             }
         }
     }
