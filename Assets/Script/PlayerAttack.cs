@@ -3,6 +3,8 @@ using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public AudioSource attackSound;
+
     public Transform cameraTransform;
     public GameObject hitbox;
 
@@ -28,12 +30,13 @@ public class PlayerAttack : MonoBehaviour
     {
         canAttack = false;
 
-        // ???????????
+        if (attackSound != null)
+            attackSound.Play();
+
         Vector3 camForward = cameraTransform.forward;
         Vector3 dir = new Vector3(camForward.x, 0, camForward.z);
         transform.forward = dir;
 
-        // ???? hitbox
         hitbox.SetActive(true);
 
         yield return new WaitForSeconds(activeTime);
